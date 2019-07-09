@@ -1,0 +1,192 @@
+<html>
+
+<head>
+	<title>Quanto custa transferir BITCOIN hoje?</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <style>
+        .form-signin {
+            width: 100%;
+            max-width: 900px;
+            padding-top: 25px !important;
+            margin: auto;
+            background: #fff;
+            padding: 40px 40px 10px 40px;
+            margin: 25px 0;
+            background-color: rgba(175, 175, 145, 0.2196078431372549) !important;
+            color: #fff;
+            text-align: left;
+            font-family: 'Poppins';
+        }
+        
+        a {
+            color: #dbdc60;
+        }
+        
+        a:hover {
+            color: #97983c;
+        }
+        
+        body {
+            background: url(background.svg);
+            background-size: cover;
+            background-color: #000 !important;
+        }
+        
+        .resultado {
+            background: #000;
+            border-radius: 15px;
+            padding: 25px 15px;
+            margin: 5px;
+        }
+        
+        .resultado h5 {
+            color: #e1e25d;
+        }
+        
+        h5 {
+            color: #f3f3a4
+        }
+        
+        .text-aviso {
+            color: #868673;
+        }
+    </style>
+</head>
+
+<body>
+
+    <center>
+        <small><br><p class="text-aviso"><b> Atenção: </b>Essa página se atualiza a cada 6 segundos</p></small></center>
+    <center>
+        <div class="form-signin  rounded">
+            <div class="col-md-12">
+                <h3> Quanto vou pagar para enviar Bitcoin?</h3>
+                <p>Para enviar BTC utilize uma das taxas abaixo, cada uma corresponde ao tempo que demoraria para a confirmação na blockchain:</p>
+                <div class="row">
+                    <div class="col-md-4 ">
+                        <div class="resultado">
+                            <div id="fastestFee"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 ">
+                        <div class="resultado">
+                            <div id="feeHalfHour"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 ">
+                        <div class="resultado">
+                            <div id="feeHour"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            <div class="col-md-12">
+                <center>
+                    <h5>API utilizadas</h5>
+
+                    <h6><b>API de fee:</b> <a href="https://bitcoinfees.earn.com/api/v1/fees/recommended"> https://bitcoinfees.earn.com/api/v1/fees/recommended</a><br/></h6>
+                    <h6><b>API de cotação BRL:</b> <a href="https://www.mercadobitcoin.net/api/BTC/ticker"> https://www.mercadobitcoin.net/api/BTC/ticker</a>  <br/></h6>
+                    <h6><b>API de cotação USD:</b> <a href="https://www.bitstamp.net/api/v2/ticker/btcusd"> https://www.bitstamp.net/api/v2/ticker/btcusd</a>  <br/></h6>
+                    
+                </center>
+
+                <br/>
+                <center>
+                    <h5>Acelerador de transações</h5>
+
+                    <h6><b>Acelere sua transação:</b> <a href="https://anubis.website/accelerator"> https://anubis.website/accelerator</a><br/></h6>
+                    
+                </center>
+                <br/>
+                <center>
+                    <h5>Agradecimentos</h5>
+
+                    <h6><b>Osorio Jr - Original MY</b><br/></h6>
+                    <h6><b>Carlos - Pagcripto<br/></h6>                    
+                    
+                </center>
+
+                <br/>
+                <center>
+                    <p class="text-white">Divulgue e acesse a plataforma <a href="https://anubis.website/" alt="Site Anubis Trade">AnubisTrade </a></p>
+
+                    <a href="https://github.com/MatheusGrijo" style="margin-right: 20px"><img src="github-logo.png"></a>
+                    <a href="https://anubis.website/"><img src="icon.png"></a>
+                    <br>
+                    <br>
+                    <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fanubis.website%2Faccelerator%2F&layout=button&size=large&width=119&height=28&appId" width="119" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                </center>
+
+                <br/>
+            </div>
+        </div>
+    </center>
+
+    <script>
+        var btcBRL = 0;
+        var btcUSD  = 0;
+        cotacaoBRL();
+        cotacaoUSD();
+
+        function cotacaoBRL() {
+            $.ajax({
+                type: 'GET',
+                url: "https://www.mercadobitcoin.net/api/BTC/ticker",
+                cache: false,
+                contentType: 'application/json',
+                success: function(output) {
+
+                    btcBRL = output["ticker"]["last"];
+
+                }
+            });
+        }
+
+        function cotacaoUSD() {
+            $.ajax({
+                type: 'GET',
+                url: "https://www.bitstamp.net/api/v2/ticker/btcusd",
+                cache: false,
+                contentType: 'application/json',
+                success: function(output) {                	
+                    btcUSD = output["last"];
+
+                }
+            });
+        }
+
+        function refresh() {
+
+            $.ajax({
+                type: 'GET',
+                url: "https://bitcoinfees.earn.com/api/v1/fees/recommended",
+                cache: false,
+                success: function(output) {
+
+                    cotacaoBRL();
+                    var fastestFee = (output["fastestFee"] * 1024) / 100000000;
+                    var halfHourFee = (output["halfHourFee"] * 1024) / 100000000;
+                    var hourFee = (output["hourFee"] * 1024) / 100000000;
+
+                    $("#fastestFee").html("<h5>Em 10 minutos:</h5> " + fastestFee + " BTC " + " <br> (R$ " + Math.round(btcBRL * fastestFee) + "<br/>U$ "+ Math.round(btcUSD * fastestFee)+")");                    
+                    $("#feeHalfHour").html("<h5>Em 30 minutos:</h5> " + halfHourFee + " BTC " + " <br> (R$ " + Math.round(btcBRL * halfHourFee) + "<br/>U$ "+Math.round(btcUSD * halfHourFee)+")");
+                    $("#feeHour").html("<h5>Em 60 minutos:</h5> " + hourFee + " BTC " + " <br> (R$ " + Math.round(btcBRL * hourFee) + "<br/>U$ "+Math.round(btcUSD * hourFee)+")");
+                }
+            });
+
+        }
+
+        refresh();
+        setInterval(cotacaoBRL, 3000);
+        setInterval(cotacaoUSD, 3000);
+        setInterval(refresh, 6000);
+    </script>
+
+</body>
+
+</html>
