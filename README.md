@@ -1,0 +1,2 @@
+# bitcointaxas
+Qual o custo apra eu enviar BITCOIN agora?
