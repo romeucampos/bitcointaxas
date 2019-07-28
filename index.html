@@ -115,7 +115,7 @@
                 <center>
                     <p class="text-white">Divulgue e acesse a plataforma <a href="https://anubis.website/" alt="Site Anubis Trade">AnubisTrade </a></p>
 
-                    <a href="https://github.com/MatheusGrijo" style="margin-right: 20px"><img src="github-logo.png"></a>
+                    <a href="https://github.com/MatheusGrijo/bitcointaxas" style="margin-right: 20px"><img src="github-logo.png"></a>
                     <a href="https://anubis.website/"><img src="icon.png"></a>
                     <br>
                     <br>
@@ -131,6 +131,65 @@
         var btcBRL = 0;
         var btcUSD  = 0;
         cotacaoBRL();
+        cotacaoUSD();
+
+        function cotacaoBRL() {
+            $.ajax({
+                type: 'GET',
+                url: "https://www.mercadobitcoin.net/api/BTC/ticker",
+                cache: false,
+                contentType: 'application/json',
+                success: function(output) {
+
+                    btcBRL = output["ticker"]["last"];
+
+                }
+            });
+        }
+
+        function cotacaoUSD() {
+            $.ajax({
+                type: 'GET',
+                url: "https://www.bitstamp.net/api/v2/ticker/btcusd",
+                cache: false,
+                contentType: 'application/json',
+                success: function(output) {                	
+                    btcUSD = output["last"];
+
+                }
+            });
+        }
+
+        function refresh() {
+
+            $.ajax({
+                type: 'GET',
+                url: "https://bitcoinfees.earn.com/api/v1/fees/recommended",
+                cache: false,
+                success: function(output) {
+
+                    cotacaoBRL();
+                    var fastestFee = (output["fastestFee"] * 1024) / 100000000;
+                    var halfHourFee = (output["halfHourFee"] * 1024) / 100000000;
+                    var hourFee = (output["hourFee"] * 1024) / 100000000;
+
+                    $("#fastestFee").html("<h5>Em 10 minutos:</h5> " + fastestFee + " BTC " + " <br> (R$ " + (btcBRL * fastestFee) + "<br/>U$ "+ (btcUSD * fastestFee)+")");                    
+                    $("#feeHalfHour").html("<h5>Em 30 minutos:</h5> " + halfHourFee + " BTC " + " <br> (R$ " + (btcBRL * halfHourFee) + "<br/>U$ "+(btcUSD * halfHourFee)+")");
+                    $("#feeHour").html("<h5>Em 60 minutos:</h5> " + hourFee + " BTC " + " <br> (R$ " + (btcBRL * hourFee) + "<br/>U$ "+(btcUSD * hourFee)+")");
+                }
+            });
+
+        }
+
+        refresh();
+        setInterval(cotacaoBRL, 3000);
+        setInterval(cotacaoUSD, 3000);
+        setInterval(refresh, 6000);
+    </script>
+
+</body>
+
+</html>
         cotacaoUSD();
 
         function cotacaoBRL() {
